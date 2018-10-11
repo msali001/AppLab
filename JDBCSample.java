@@ -39,19 +39,71 @@ public class JDBCSample {
             //                  String deptName = br.readLine();
             // select course.titlefrom course,takes where student.id = ?
             //System.out.println(args[0]);
-                  PreparedStatement pstmt=conn.prepareStatement("select course.title from course,takes where takes.ID = ? and"
-                                                                        +" course.course_id=takes.course_id");
-                  pstmt.setString(1, args[0]);
-                  ResultSet rs = pstmt.executeQuery();
-                  boolean flag= false;
-                  while(rs.next()) {
-                        String name = rs.getString(1);
-                        System.out.println(name);
-                        flag = true;
+                  PreparedStatement pstmt;
+                  //PreparedStatement pstmt=conn.prepareStatement("select course.title from course,takes where takes.ID = ? and"
+                  //                                                      +" course.course_id=takes.course_id");
+                  //pstmt =conn.prepareStatement("select * from track where stcode1 = ? and stcode2 = ?");
+                  
+                  //pstmt.setString(1, args[0]);
+                 // pstmt.setString(2, args[1]);
+                 // ResultSet rs = pstmt.executeQuery();
+                  //boolean flag= false;
+                  BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+                  System.out.print("Enter query:");
+                  String query = br.readLine();
+                  int n = 0;
+                  char array[] = query.toCharArray();
+                  pstmt =conn.prepareStatement(query);
+                  for (int i = 0; i < 100 ; i++) {
+                        if(array[i] == '?') {
+                              n++;
+                              System.out.print("Enter Parameter("+n+") : ");
+                              String param = br.readLine();
+                              System.out.println(n+param);
+                              //pstmt.setString(n,param);
+                              System.out.print("Enter1");
+                              
+                        }
                   }
-                  if(flag == false)
-                        System.out.println("Not a valid  ID");
+                  System.out.print("Enter");
+                  
+                  ResultSet rs = pstmt.executeQuery();
+                  System.out.print("Enter1");
+                  ResultSetMetaData rsmd = rs.getMetaData();
+                  System.out.print("Enter1");
+                  int count = rsmd.getColumnCount(); 
+                  System.out.print("Enter1");
+                  while(rs.next()) {
+                        for (int i = 0; i < count; i++) {
+                        System.out.print("Enter1");
+                              System.out.print(rs.getString(i));System.out.print("Enter1");
+                        }
+                        System.out.println("");
                         
+                  }
+                  
+/*                  for (int i = 0; i < 10 ; i++) {
+                  System.out.println("Enter Parameter(i:");
+                  if(rs.next()) {
+                        pstmt =conn.prepareStatement("update track set distance = ? where stcode1 = ? and stcode2 = ?");
+                        pstmt.setInt(1, Integer.parseInt(args[2]));
+                        pstmt.setString(2, args[0]);
+                        pstmt.setString(3, args[1]);
+                        pstmt.executeUpdate();
+                        System.out.println("Updated");
+                  
+                  }
+                  else {
+                        pstmt =conn.prepareStatement("insert into track values(?,?,?)");
+                        pstmt.setString(1, args[0]);
+                        pstmt.setString(2, args[1]);
+                        pstmt.setInt(3, Integer.parseInt(args[2]));
+                        pstmt.executeUpdate();
+                        System.out.println("Inserted");
+                  }
+                  
+                  
+ */                       
                   conn.close();
 
             }
@@ -59,8 +111,9 @@ public class JDBCSample {
                   System.out.println(sqle);
                   System.exit(1);
             }
-            catch (ArrayIndexOutofBoundException e ) {
-                  System.out.println("No Student Id Entered");
+            catch (Exception e) {
+                  System.out.println("Check your input error :"+e);
+                  e.printStackTrace();
                   System.exit(1);
             }
       }
