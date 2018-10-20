@@ -13,7 +13,9 @@ public class JDBCSample {
             }
 
             //Enter the connection details
-            String hostname = "192.168.11.21";	// If PostgreSQL is running on some other machine enter the IP address of the machine here
+            // Static IP = 14.139.183.243
+            // Local IP = 192.168.11.21  ---- Not Sure
+            String hostname = "14.139.183.243";	// If PostgreSQL is running on some other machine enter the IP address of the machine here
             String username = "lpkd16cs064"; // Enter your PostgreSQL username
             String password = "password"; // Enter your PostgreSQL password
             String dbName = "lpkd16cs064db"; // Enter the name of the database that has the university tables.
@@ -43,7 +45,7 @@ public class JDBCSample {
                   //PreparedStatement pstmt=conn.prepareStatement("select course.title from course,takes where takes.ID = ? and"
                   //                                                      +" course.course_id=takes.course_id");
                   //pstmt =conn.prepareStatement("select * from track where stcode1 = ? and stcode2 = ?");
-                  
+
                   //pstmt.setString(1, args[0]);
                  // pstmt.setString(2, args[1]);
                  // ResultSet rs = pstmt.executeQuery();
@@ -54,34 +56,25 @@ public class JDBCSample {
                   int n = 0;
                   char array[] = query.toCharArray();
                   pstmt =conn.prepareStatement(query);
-                  for (int i = 0; i < 100 ; i++) {
+                  for (int i = 0; i < array.length ; i++) {
                         if(array[i] == '?') {
                               n++;
                               System.out.print("Enter Parameter("+n+") : ");
                               String param = br.readLine();
-                              System.out.println(n+param);
-                              //pstmt.setString(n,param);
-                              System.out.print("Enter1");
-                              
+                              pstmt.setString(n,param);
                         }
                   }
-                  System.out.print("Enter");
-                  
                   ResultSet rs = pstmt.executeQuery();
-                  System.out.print("Enter1");
                   ResultSetMetaData rsmd = rs.getMetaData();
-                  System.out.print("Enter1");
-                  int count = rsmd.getColumnCount(); 
-                  System.out.print("Enter1");
+                  int count = rsmd.getColumnCount();
                   while(rs.next()) {
-                        for (int i = 0; i < count; i++) {
-                        System.out.print("Enter1");
-                              System.out.print(rs.getString(i));System.out.print("Enter1");
+                        for (int i = 1; i <= count; i++) {
+                              System.out.print(rs.getString(i)+"\t");
                         }
                         System.out.println("");
-                        
+
                   }
-                  
+
 /*                  for (int i = 0; i < 10 ; i++) {
                   System.out.println("Enter Parameter(i:");
                   if(rs.next()) {
@@ -91,7 +84,7 @@ public class JDBCSample {
                         pstmt.setString(3, args[1]);
                         pstmt.executeUpdate();
                         System.out.println("Updated");
-                  
+
                   }
                   else {
                         pstmt =conn.prepareStatement("insert into track values(?,?,?)");
@@ -101,9 +94,9 @@ public class JDBCSample {
                         pstmt.executeUpdate();
                         System.out.println("Inserted");
                   }
-                  
-                  
- */                       
+
+
+ */
                   conn.close();
 
             }
